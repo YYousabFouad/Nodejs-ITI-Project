@@ -6,6 +6,8 @@ const { xss } = require("express-xss-sanitizer");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
 
+const connectDB = require("./config/db");
+
 const globalErrorHandler = require("./middleware/errorMiddleware");
 const AppError = require("./utils/AppError");
 
@@ -15,6 +17,9 @@ const postRoutes = require("./routes/postRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 
 // Security middleware
 app.use(helmet());
@@ -28,6 +33,8 @@ const limiter = rateLimit({
   max: 100,
   message: "Too many requests from this IP, please try again later.",
 });
+
+// Uncomment if you want to enable rate limiting
 // app.use("/api", limiter);
 
 // Body parser

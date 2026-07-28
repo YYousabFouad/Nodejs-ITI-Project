@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const mongoSanitize = require("express-mongo-sanitize");
 const { xss } = require("express-xss-sanitizer");
 const hpp = require("hpp");
 const rateLimit = require("express-rate-limit");
@@ -20,7 +19,6 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors());
-app.use(mongoSanitize());
 app.use(xss());
 app.use(hpp());
 

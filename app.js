@@ -14,11 +14,6 @@ const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 
-const app = express();
-
-// Trust Vercel Proxy
-app.set("trust proxy", 1);
-
 // Security middleware
 app.use(helmet());
 app.use(cors());
@@ -27,15 +22,15 @@ app.use(hpp());
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: "Too many requests from this IP, please try again later.",
 });
+const app = express();
 
-app.use("/api", limiter);
-
+app.set("trust proxy", 1);
 // Body parser
 app.use(express.json({ limit: "10kb" }));
 
@@ -52,9 +47,7 @@ app.use("/api/groups", groupRoutes);
 
 // Health check
 app.get("/", (req, res) => {
-  res.json({
-    message: "Blog API is running 🚀",
-  });
+  res.json({ message: "Blog API is running 🚀" });
 });
 
 // Handle undefined routes

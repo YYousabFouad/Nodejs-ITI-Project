@@ -14,6 +14,8 @@ const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 
+const app = express();
+
 // Security middleware
 app.use(helmet());
 app.use(cors());
@@ -24,13 +26,10 @@ app.use(hpp());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
   message: "Too many requests from this IP, please try again later.",
 });
-const app = express();
+app.use("/api", limiter);
 
-app.set("trust proxy", 1);
 // Body parser
 app.use(express.json({ limit: "10kb" }));
 
